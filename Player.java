@@ -66,6 +66,6 @@ public int getArmor() {
 	return this.armor;
 }
 
-public boolean useItem() {
-	return false;
+public boolean useItem(Item item) {
+	return item.use(this); // posible casting, ver cual use() ejecuta
 }

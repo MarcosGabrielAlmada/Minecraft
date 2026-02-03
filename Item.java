@@ -1,11 +1,18 @@
 public abstract class Item {
     private String name;
     private int position;
+    private int intensity;
 
+
+    // Constructor
+
+    public Item(int intensity) {
+        this.intensity = intensity;
+    }
 
     // Commands
 
-    abstract public boolean use();
+    abstract public void use();
 
 
     // Queries
