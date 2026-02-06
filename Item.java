@@ -20,4 +20,12 @@ public abstract class Item {
     public String getName() {
         return this.name;
     }
+
+    public int getPosition() {
+        return this.position;
+    }
+
+    public int getIntensity() {
+        return this.intensity;
+    }
 }

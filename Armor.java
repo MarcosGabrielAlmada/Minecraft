@@ -1,4 +1,4 @@
-public class Food {
+public class Food extends Item {
     // Constructor
 
     public Food(int intensity) {
@@ -10,12 +10,5 @@ public class Food {
 
     public void use(Player player) {
         player.addEnergy(this.intensity*2);
-    }
-
-
-    // Queries
-
-    public int getIntensity() {
-        return this.intensity;
     }
 }
