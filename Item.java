@@ -1,18 +1,18 @@
 public abstract class Item {
     private String name;
     private int position;
-    private int intensity;
+    private int nivel;
 
 
     // Constructor
 
-    public Item(int intensity) {
-        this.intensity = intensity;
+    public Item(int nivel) {
+        this.nivel = nivel;
     }
 
     // Commands
 
-    abstract public void use();
+    abstract public void use(Player player);
 
 
     // Queries
@@ -21,11 +21,7 @@ public abstract class Item {
         return this.name;
     }
 
-    public int getPosition() {
-        return this.position;
-    }
-
-    public int getIntensity() {
-        return this.intensity;
+    public int getNivel() {
+        return this.nivel;
     }
 }

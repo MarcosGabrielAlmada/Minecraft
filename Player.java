@@ -22,14 +22,14 @@ public Player(String n, int pX, int pY) {
 
 // Commands
 
-public boolean addLife(int cant) {
+public void addLife(int cant) {
 	this.life += cant;
 	if (this.life > 10) {
 		this.life = 10;
 	}
 }
 
-public boolean addEnergy(int cant) {
+public void addEnergy(int cant) {
 	this.energy += cant;
 	if (this.energy > 10) {
 		this.energy = 10;
