@@ -1,33 +1,26 @@
-public class Player {
+public class Player extends Entity {
 	private String name;
-	private int life;
+
 	private int energy;
 	private int armor;
-	private Inventory inventory;
-	private int positionX;
-	private int positionY;
-	private Entity target;
+
+	// TODO: Comunicacion entre Player - Inventory
+
+	// private Inventory inventory;
 
 	// Constructor
 
-	public Player(String n, int pX, int pY) {
+	public Player(String n, int p) {
+		super(p);
 		this.name = n;
-		this.life = 10;
 		this.energy = 10;
 		this.armor = 10;
-		this.inventory = new Inventory();
-		this.positionX = pX;
-		this.positionY = pY;
+		// this.inventory = new Inventory();
 	}
 
 	// Commands
 
-	public void addLife(int cant) {
-		this.life += cant;
-		if (this.life > 10) {
-			this.life = 10;
-		}
-	}
+	
 
 	public void addEnergy(int cant) {
 		this.energy += cant;
@@ -39,7 +32,7 @@ public class Player {
 	}
 
 	private void regeneration() {
-		addLife(3);
+		modifyLife(3);
 	}
 
 	public void addArmor(int cant) {
@@ -49,9 +42,8 @@ public class Player {
 		}
 	}
 
-	public void move(int pX, int pY) {
-		this.positionX = pX;
-		this.positionY = pY;
+	public void useItem(Item item) {
+		item.use(this); // FIXME - posible casting, ver cual use() ejecuta
 	}
 
 	// Queries
@@ -60,23 +52,11 @@ public class Player {
 		return this.name;
 	}
 
-	public int getLife() {
-		return this.life;
-	}
-
 	public int getEnergy() {
 		return this.energy;
 	}
 
 	public int getArmor() {
 		return this.armor;
-	}
-
-	public void useItem(Item item) {
-		item.use(this); // posible casting, ver cual use() ejecuta
-	}
-
-	public Entity getTarget() {
-		return this.target;
 	}
 }
