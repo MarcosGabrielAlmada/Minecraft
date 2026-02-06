@@ -1,7 +1,6 @@
 public abstract class Entity {
 	protected float life;
 	protected int position;
-
 	protected Entity target;
 	
 

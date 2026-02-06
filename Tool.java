@@ -9,6 +9,6 @@ public class Tool extends Item {
     // Commands
 
     public void use(Player player) {
-        player.getTarget().subtractLife(nivel*2);
+        player.getTarget().modifyLife(nivel*2);
     }
 }
