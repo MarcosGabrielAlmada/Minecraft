@@ -1,21 +1,14 @@
-public class Food {
+public class Armor extends Item {
     // Constructor
 
-    public Food(int intensity) {
-        super(intensity);
+    public Armor(int nivel) {
+        super(nivel);
     }
 
 
     // Commands
 
     public void use(Player player) {
-        player.addEnergy(this.intensity*2);
-    }
-
-
-    // Queries
-
-    public int getIntensity() {
-        return this.intensity;
+        player.addArmor(this.nivel*2);
     }
 }
