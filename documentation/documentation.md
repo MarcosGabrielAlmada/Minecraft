@@ -2,7 +2,7 @@ Inventory
 
 addItemInPosition(Item item, int pos)
 * pos=1 => [0]
-* hay que ver que hacer con los "items seleccionados", por ejemplo cuando se agrega un item en un lugar ocupado, que pasa con el que salio
+
 
 
 
@@ -18,4 +18,4 @@ Armor
     * 2: 2 escuditos
     * 3: 3 escuditos
 
-Tool por ahora es solo una espada, es decir arma
+Tool, por ahora, es solo una espada

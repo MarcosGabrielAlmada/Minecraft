@@ -6,66 +6,77 @@ public class Player {
 	private Inventory inventory;
 	private int positionX;
 	private int positionY;
-}
+	private Entity target;
 
-// Constructor
+	// Constructor
 
-public Player(String n, int pX, int pY) {
-	this.name = n;
-	this.life = 10;
-	this.energy = 10;
-	this.armor = 10;
-	this.inventory = new Inventory();
-	this.positionX = pX;
-	this.positionY = pY;
-}
-
-// Commands
-
-public void addLife(int cant) {
-	this.life += cant;
-	if (this.life > 10) {
+	public Player(String n, int pX, int pY) {
+		this.name = n;
 		this.life = 10;
-	}
-}
-
-public void addEnergy(int cant) {
-	this.energy += cant;
-	if (this.energy > 10) {
 		this.energy = 10;
-	}
-}
-
-public void addArmor(int cant) {
-	this.armor += cant;
-	if (this.armor > 10) {
 		this.armor = 10;
+		this.inventory = new Inventory();
+		this.positionX = pX;
+		this.positionY = pY;
 	}
-}
 
-public void move(int pX, int pY) {
-	this.positionX = pX;
-	this.positionY = pY;
-}
+	// Commands
 
-// Queries
+	public void addLife(int cant) {
+		this.life += cant;
+		if (this.life > 10) {
+			this.life = 10;
+		}
+	}
 
-public String getName() {
-	return this.name;
-}
+	public void addEnergy(int cant) {
+		this.energy += cant;
+		if (this.energy > 10) {
+			this.energy = 10;
+			regeneration();
+		}
 
-public int getLife() {
-	return this.life;
-}
+	}
 
-public int getEnergy() {
-	return this.energy;
-}
+	private void regeneration() {
+		addLife(3);
+	}
 
-public int getArmor() {
-	return this.armor;
-}
+	public void addArmor(int cant) {
+		this.armor += cant;
+		if (this.armor > 10) {
+			this.armor = 10;
+		}
+	}
 
-public boolean useItem(Item item) {
-	return item.use(this); // posible casting, ver cual use() ejecuta
+	public void move(int pX, int pY) {
+		this.positionX = pX;
+		this.positionY = pY;
+	}
+
+	// Queries
+
+	public String getName() {
+		return this.name;
+	}
+
+	public int getLife() {
+		return this.life;
+	}
+
+	public int getEnergy() {
+		return this.energy;
+	}
+
+	public int getArmor() {
+		return this.armor;
+	}
+
+	public void useItem(Item item) {
+		item.use(this); // posible casting, ver cual use() ejecuta
+	}
+
+	public Entity getTarget() {
+		return this.target;
+	}
 }

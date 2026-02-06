@@ -8,7 +8,7 @@ public class Tool extends Item {
 
     // Commands
 
-    public void use(Player player, Zombie zombie) {
-        zombie.subtractLife(nivel*2);
+    public void use(Player player) {
+        player.getTarget().subtractLife(nivel*2);
     }
 }

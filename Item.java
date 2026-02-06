@@ -1,7 +1,7 @@
 public abstract class Item {
-    private String name;
-    private int position;
-    private int nivel;
+    protected String name;
+    protected int position;
+    protected int nivel;
 
 
     // Constructor
