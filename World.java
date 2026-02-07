@@ -1,12 +1,12 @@
 public class World {
 	private static final int lenght = 10;
-	private Entity[] content;
+	private Entity[] grid;
 
 
 	// Constructor
 
 	public World() {
-		this.content = new Entity[lenght];
+		this.grid = new Entity[lenght];
 	}
 
 
@@ -14,8 +14,8 @@ public class World {
 
 	public void moveEntityToPosition(Entity e, int pos) { // TODO - Testear esto
 		if (e.getPosition() != pos - 1) {
-			this.content[e.getPosition()] = null;
-			this.content[pos - 1] = e;
+			this.grid[e.getPosition()] = null;
+			this.grid[pos - 1] = e;
 			e.move(pos);
 		}
 	}
@@ -24,6 +24,6 @@ public class World {
 	// Queries
 
 	public Entity getEntityInPosition(int pos) {
-		return this.content[pos - 1];
+		return this.grid[pos - 1];
 	}
 }
