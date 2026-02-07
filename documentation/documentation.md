@@ -19,3 +19,7 @@ Armor
     * 3: 3 escuditos
 
 Tool, por ahora, es solo una espada
+
+
+
+World: mapa, casilleros, grilla

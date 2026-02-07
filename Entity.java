@@ -32,11 +32,11 @@ public abstract class Entity {
 
 	// Queries
 
-	public float life() {
+	public float getLife() {
 		return this.life;
 	}
 
-	public int position() {
+	public int getPosition() {
 		return this.position;
 	}
 
