@@ -12,6 +12,10 @@ public class World {
 
 	// Commands
 
+	public void serEntityInPosition(Entity entity, int pos) {
+		this.grid[pos - 1] = entity;
+	}
+
 	public void moveEntityToPosition(Entity e, int pos) { // TODO - Testear esto
 		if (e.getPosition() != pos - 1) {
 			this.grid[e.getPosition()] = null;

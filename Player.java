@@ -7,9 +7,9 @@ public class Player extends Entity {
 	
 	// Constructor
 
-	public Player(String n, int p) {
-		super(p);
-		this.name = n;
+	public Player(String name, int position) {
+		super(position);
+		this.name = name;
 		this.energy = 10;
 		this.armor = 10;
 		this.inventory = new Inventory();

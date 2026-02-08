@@ -1,18 +1,36 @@
 public class Game {
+	private World world;
 	private Entity[] entities;
 	private Entity turn;
-	private World world;
 
 
 	// Constructor
 
-	public Game() {
-		this.entities = new Entity[2];
-		this.entities[0] = new Player("Marcos", 0);
-		this.entities[1] = new Zombie(10);
-
-		this.turn = this.entities[0];
+	public Game(String playerName, int playerPosition) {
 		this.world = new World();
+		this.entities = new Entity[2];
+		this.turn = this.entities[0];
+
+		initializeEntities(playerName, playerPosition);
+		initializeWorld();
+	}
+
+
+	// Helpers
+
+	private void initializeEntities(String playerName, int playerPosition) {
+		int zombiePosition = 10;
+		if (playerPosition == 10) {
+			zombiePosition = 9;
+		}
+
+		this.entities[0] = new Player(playerName, playerPosition);
+		this.entities[1] = new Zombie(zombiePosition);
+	}
+
+	private void initializeWorld() {
+		for (int i = 0; i > entities.length; i++)
+		this.world.serEntityInPosition(this.entities[i], this.entities[i].getPosition());
 	}
 
 
