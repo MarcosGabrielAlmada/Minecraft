@@ -1,6 +1,8 @@
 import java.io.Reader;
 import java.util.concurrent.TimeUnit;
 
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import org.jline.utils.InfoCmp.Capability;
@@ -9,7 +11,7 @@ public class JLineTester {
 	public static void main(String[] args) {
 
 		try {
-			// Create a default terminal
+			// Create a Terminal (with jansi)
 			Terminal terminal = TerminalBuilder.builder()
 					.system(true)
 					.jansi(true)
@@ -18,17 +20,21 @@ public class JLineTester {
 			// Clean screen
 			terminal.puts(Capability.clear_screen);
 			
-			// Create a default reader
-        	Reader reader = terminal.reader();
+			// Create a default Character Reader and Line Reader
+        	Reader cReader = terminal.reader();
+        	LineReader lineReader = LineReaderBuilder.builder()
+                    .terminal(terminal)
+                    .build();
 
-			// Reader
-        	int c = reader.read();
+			// Character/line Reader
+        	int c = cReader.read();
+        	String line = lineReader.readLine("");
 
 			// Writer
 			terminal.writer().printf("You pressed: %c (ASCII: %d)%n", (char) c, c);
-			terminal.writer().println("\u001B[1;31mThis text is bold and red\u001B[0m");
+			terminal.writer().println("\u001B[1;31mThis text is bold and red, " + line + "\u001B[0m");
 
-			// Kind of terminal updater or refresher
+			// Kind of Terminal updater or refresher
 			terminal.writer().flush();
 
 			// Wait a moment

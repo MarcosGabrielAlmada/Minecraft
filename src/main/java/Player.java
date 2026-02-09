@@ -40,6 +40,25 @@ public class Player extends Entity {
 		this.inventory.getSelected().use(this);
 	}
 
+	public int calculateMovement(String direction) {
+		switch (direction) {
+			case 4:
+				
+				break;
+		
+			
+			case 6:
+				
+				break;
+		
+			default:
+				break;
+		}
+
+		return 0;
+	}
+
+
 	// Queries
 
 	public String getName() {
