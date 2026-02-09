@@ -27,6 +27,10 @@ public class World {
 
 	// Queries
 
+	public Entity[] getGrid() {
+		return this.grid;
+	}
+
 	public Entity getEntityInPosition(int pos) {
 		return this.grid[pos - 1];
 	}
