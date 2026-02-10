@@ -56,78 +56,28 @@ public class Run {
 		// KeyEvent.VK_DOWN 40
 
 		try {
-			String action;
 			do {
 				cleanTerminal(terminal);
 				terminal.writer().flush();
 				writeWorld(game, playerEntity, zombieEntity);
 
-				boolean validMainInput;
-
-
-				// PLAYERS'TURN
-
-				do {
-					validMainInput = true;
-					action = keyReader.readBinding(keyMap);
-
-					if (action == "LEFT" || action == "RIGHT") {
-						Player player = (Player) playerEntity;
-						int tmpPosition = player.calculateMovement(action);
-
-						if (tmpPosition == zombieEntity.getPosition()) { // in case the player collides with the zombie
-							if (action == "LEFT") {
-								player.move(tmpPosition+1);
-							} else {
-								player.move(tmpPosition-1);
-							}
-						} else {
-							player.move(tmpPosition);
-						}
-
-					} else if (action == "1") {
-
-					} else if (action == "2") {
-
-					} else if (action == "3") {
-
-					} else if (action == "USE") {
-
-					} else if (action == "EXIT") {
-						boolean validExitInput = false;
-
-						do {
-							terminal.writer().print("Are you sure you want exit?[Y/n]: ");
-							terminal.writer().flush();
-							action = lineReader.readLine();
-							
-							if (action.toUpperCase().equals("Y")) {
-								endGame = true;
-								validExitInput = true;
-							} else if (action.toUpperCase().equals("N")) {
-								validExitInput = true;
-								validMainInput = true;
-							} else {
-								cleanTerminal(terminal);
-							}
-
-						} while (!validExitInput);
-
-					} else { // if it is not an linked key
-						validMainInput = false;
-					}
-				} while (!validMainInput);
+				endGame = playerTurn(keyReader, lineReader, keyMap, playerEntity, zombieEntity, game, terminal);
 
 			} while (!endGame);
+
 		} finally {
+			cleanTerminal(terminal);
+			terminal.writer().println("GoodBye!");
+			terminal.writer().flush();
+			try {
+				terminal.close();
+			} catch (Exception e) {
+			}
 		}
 
 	}
 
-	private static void cleanTerminal(Terminal terminal) {
-		terminal.puts(Capability.clear_screen);
-		terminal.writer().println();
-	}
+	// Terminal & Readers
 
 	private static Terminal setTerminal(Terminal terminal) {
 		do {
@@ -140,6 +90,11 @@ public class Run {
 			}
 		} while (terminal == null);
 		return terminal;
+	}
+
+	private static void cleanTerminal(Terminal terminal) {
+		terminal.puts(Capability.clear_screen);
+		terminal.writer().println();
 	}
 
 	private static Reader setKeyReader(Terminal terminal, Reader cReader) {
@@ -181,6 +136,8 @@ public class Run {
 		return lineReader;
 	}
 
+	// Player's setters
+
 	private static String setPlayerName(Terminal terminal, LineReader lineReader, String playerName) {
 		do {
 			try {
@@ -208,6 +165,8 @@ public class Run {
 		} while (playerPosition == -1);
 		return playerPosition;
 	}
+
+	// World's printer
 
 	private static void writeWorld(Game game, Entity player, Entity zombie) {
 		int worldSize = game.getWorld().getGrid().length;
@@ -244,4 +203,71 @@ public class Run {
 			}
 		}
 	}
+
+	// Entity turns
+
+	private static boolean playerTurn(BindingReader keyReader, LineReader lineReader, KeyMap<String> keyMap, Entity playerEntity, Entity zombieEntity, Game game, Terminal terminal) {
+		String action;
+		boolean validMainInput;
+		boolean endGame = false;
+
+		do {
+			validMainInput = true;
+			action = keyReader.readBinding(keyMap);
+
+			if (action == "LEFT" || action == "RIGHT") {
+				Player player = (Player) playerEntity;
+				int tmpPosition = player.calculateMovement(action);
+
+				if (tmpPosition == zombieEntity.getPosition()) { // in case the player collides with the zombie
+					if (action == "LEFT") {
+						player.move(tmpPosition + 1);
+					} else {
+						player.move(tmpPosition - 1);
+					}
+				} else {
+					player.move(tmpPosition);
+				}
+
+				game.toggleTurn();
+
+			} else if (action == "1") {
+
+			} else if (action == "2") {
+
+			} else if (action == "3") {
+
+			} else if (action == "USE") {
+
+				game.toggleTurn();
+
+			} else if (action == "EXIT") {
+				boolean validExitInput = false;
+
+				do {
+					terminal.writer().println("Are you sure you want exit?[Y/n]: ");
+					terminal.writer().flush();
+					action = lineReader.readLine();
+
+					if (action.toUpperCase().equals("Y")) {
+						endGame = true;
+						validExitInput = true;
+					} else if (action.toUpperCase().equals("N")) {
+						validExitInput = true;
+						validMainInput = true;
+					} else {
+						cleanTerminal(terminal);
+					}
+
+				} while (!validExitInput);
+
+			} else { // if it is not an linked key
+				validMainInput = false;
+			}
+
+		} while (!validMainInput);
+
+		return endGame;
+	}
+
 }
