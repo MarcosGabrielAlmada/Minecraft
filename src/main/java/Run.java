@@ -58,7 +58,6 @@ public class Run {
 		try {
 			String action;
 			do {
-				System.out.println("paso");
 				cleanTerminal(terminal);
 				terminal.writer().flush();
 				writeWorld(game, playerEntity, zombieEntity);
@@ -75,7 +74,8 @@ public class Run {
 					if (action == "LEFT" || action == "RIGHT") {
 						Player player = (Player) playerEntity;
 						int tmpPosition = player.calculateMovement(action);
-						if (tmpPosition == zombieEntity.getPosition()) {
+
+						if (tmpPosition == zombieEntity.getPosition()) { // in case the player collides with the zombie
 							if (action == "LEFT") {
 								player.move(tmpPosition+1);
 							} else {
@@ -99,14 +99,14 @@ public class Run {
 						do {
 							terminal.writer().print("Are you sure you want exit?[Y/n]: ");
 							terminal.writer().flush();
-							action = keyReader.readBinding(keyMap);
-
-							if (action == "Y") {
+							action = lineReader.readLine();
+							
+							if (action.toUpperCase().equals("Y")) {
 								endGame = true;
 								validExitInput = true;
-							} else if (action == "N") {
+							} else if (action.toUpperCase().equals("N")) {
 								validExitInput = true;
-								validMainInput = false;
+								validMainInput = true;
 							} else {
 								cleanTerminal(terminal);
 							}
