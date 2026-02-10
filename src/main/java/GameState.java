@@ -1,4 +1,4 @@
-public class Game {
+public class GameState {
 	private World world;
 	private Entity[] entities;
 	private Entity turn;
@@ -6,7 +6,7 @@ public class Game {
 
 	// Constructor
 
-	public Game(String playerName, int playerPosition) {
+	public GameState(String playerName, int playerPosition) {
 		this.world = new World();
 		this.entities = new Entity[2];
 		this.turn = this.entities[0];

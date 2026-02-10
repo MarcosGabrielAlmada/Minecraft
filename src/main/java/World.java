@@ -1,12 +1,12 @@
 public class World {
-	public static final int lenght = 10;
+	public static final int WORLD_SIZE = 10;
 	private Entity[] grid;
 
 
 	// Constructor
 
 	public World() {
-		this.grid = new Entity[lenght];
+		this.grid = new Entity[WORLD_SIZE];
 	}
 
 

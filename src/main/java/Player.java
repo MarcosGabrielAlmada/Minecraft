@@ -56,8 +56,8 @@ public class Player extends Entity {
 
 			case "RIGHT":
 				tmpPosition = this.getPosition()+2;
-				if (tmpPosition >= World.lenght) {
-					tmpPosition = World.lenght;
+				if (tmpPosition >= World.WORLD_SIZE) {
+					tmpPosition = World.WORLD_SIZE;
 				}
 				position = tmpPosition;
 				
