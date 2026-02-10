@@ -33,19 +33,20 @@ public class Run {
 		terminal.writer().println();
 
 		// Set Player starting position
-		String playerName = "";
-		playerName = setPlayerName(terminal, lineReader, playerName);
+		// String playerName = ""; XXX
+		// playerName = setPlayerName(terminal, lineReader, playerName); XXX
 
 		cleanTerminal(terminal);
 
 		// Set Player starting position
-		int playerPosition = -1;
-		playerPosition = setPlayerPosition(terminal, lineReader, playerPosition);
+		// int playerPosition = -1; XXX
+		// playerPosition = setPlayerPosition(terminal, lineReader, playerPosition); XXX
 
 		// Game creation
-		Game game = new Game(playerName, playerPosition);
-		Entity player = game.getEntities()[0];
-		Entity zombie = game.getEntities()[1];
+		Game game = new Game("", 1);
+		// Game game = new Game(playerName, playerPosition); XXX
+		Entity playerEntity = game.getEntities()[0];
+		Entity zombieEntity = game.getEntities()[1];
 
 		boolean endGame = false;
 
@@ -57,17 +58,32 @@ public class Run {
 		try {
 			String action;
 			do {
+				System.out.println("paso");
 				cleanTerminal(terminal);
-				writeWorld(game, player, zombie);
+				terminal.writer().flush();
+				writeWorld(game, playerEntity, zombieEntity);
 
 				boolean validMainInput;
+
+
+				// PLAYERS'TURN
+
 				do {
 					validMainInput = true;
 					action = keyReader.readBinding(keyMap);
 
-					if (action == "LEFT" && action == "RIGHT") {
-						Player p = (Player) player;
-						player.move(p.calculateMovement(action));
+					if (action == "LEFT" || action == "RIGHT") {
+						Player player = (Player) playerEntity;
+						int tmpPosition = player.calculateMovement(action);
+						if (tmpPosition == zombieEntity.getPosition()) {
+							if (action == "LEFT") {
+								player.move(tmpPosition+1);
+							} else {
+								player.move(tmpPosition-1);
+							}
+						} else {
+							player.move(tmpPosition);
+						}
 
 					} else if (action == "1") {
 

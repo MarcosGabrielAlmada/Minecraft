@@ -1,5 +1,5 @@
 public class World {
-	private static final int lenght = 10;
+	public static final int lenght = 10;
 	private Entity[] grid;
 
 

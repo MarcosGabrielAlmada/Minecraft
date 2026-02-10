@@ -41,21 +41,33 @@ public class Player extends Entity {
 	}
 
 	public int calculateMovement(String direction) {
+		int position = -1;
+		int tmpPosition = -1;
+
 		switch (direction) {
-			case 4:
+			case "LEFT":
+				tmpPosition = this.getPosition()-2;
+				if (tmpPosition < 1) {
+					tmpPosition = 1;
+				}
+				position = tmpPosition;
+
+				break;
+
+			case "RIGHT":
+				tmpPosition = this.getPosition()+2;
+				if (tmpPosition >= World.lenght) {
+					tmpPosition = World.lenght;
+				}
+				position = tmpPosition;
 				
 				break;
-		
-			
-			case 6:
-				
-				break;
-		
+
 			default:
 				break;
 		}
 
-		return 0;
+		return position;
 	}
 
 
