@@ -8,7 +8,7 @@ public class Player extends Entity {
 	// Constructor
 
 	public Player(String name, int position) {
-		super(position);
+		super(position, 0.5f);
 		this.name = name;
 		this.energy = 10;
 		this.armor = 0;

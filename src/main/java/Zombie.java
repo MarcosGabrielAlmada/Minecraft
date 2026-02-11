@@ -1,16 +1,14 @@
 public class Zombie extends Entity {
-    private static double power = 1;
-
     // Constructor
 
-    public Zombie(int p) {
-        super(p);
+    public Zombie(int position) {
+        super(position, 1);
     }
 
     // Commands
 
     public void attack(Entity e) {
-        e.modifyLife((float) -Zombie.power);
+        e.modifyLife(-this.getDamage());
     }
 
     public int calculateMovement(Entity player) {

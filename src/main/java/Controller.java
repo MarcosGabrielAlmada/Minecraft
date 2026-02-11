@@ -233,17 +233,21 @@ public class Controller {
 
 	private void writeEntityStatus() {
 		this.terminal.writer().println();
-		this.terminal.writer().println("\u001B[4;36m" + this.playerName + ":\u001B[0m");
+		this.terminal.writer().println("\u001B[1;4;36m" + this.playerName + ":\u001B[0m");
 		this.terminal.writer().print("\u001B[32mLife: ");
 		this.terminal.writer().println(this.playerEntity.getLife() + "\u001B[0m");
+		this.terminal.writer().print("\u001B[31mDamage: ");
+		this.terminal.writer().println(this.playerEntity.getDamage() + "\u001B[0m");
 		this.terminal.writer().print("\u001B[33mTarget: ");
 		this.terminal.writer().println(this.playerEntity.getTarget() + "\u001B[0m");
 
 		this.terminal.writer().println();
 		this.terminal.writer().println();
-		this.terminal.writer().println("\u001B[4;32mZombie:\u001B[0m");
+		this.terminal.writer().println("\u001B[1;4;31mZombie:\u001B[0m");
 		this.terminal.writer().print("\u001B[32mLife: ");
 		this.terminal.writer().println(this.zombieEntity.getLife() + "\u001B[0m");
+		this.terminal.writer().print("\u001B[31mDamage: ");
+		this.terminal.writer().println(this.zombieEntity.getDamage() + "\u001B[0m");
 		this.terminal.writer().print("\u001B[33mTarget: ");
 		this.terminal.writer().println(this.zombieEntity.getTarget() + "\u001B[0m");
 	}
@@ -264,7 +268,7 @@ public class Controller {
 				int tmpPosition = player.calculateMovement(action);
 
 				// in case player doesn't actually move (invalid turn)
-				if (tmpPosition != this.playerEntity.getPosition()) { // TEST
+				if (tmpPosition != player.getPosition()) { // TEST
 					this.gameState.toggleTurn();
 				}
 
@@ -281,9 +285,9 @@ public class Controller {
 
 				if (tmpPosition + 1 == this.zombieEntity.getPosition() ||
 						tmpPosition - 1 == this.zombieEntity.getPosition()) {
-					this.playerEntity.setTarget(this.zombieEntity);
+					player.setTarget(this.zombieEntity);
 				} else {
-					this.playerEntity.setTarget(null);
+					player.setTarget(null);
 				}
 
 			} else if (action == "1") {
@@ -293,8 +297,11 @@ public class Controller {
 			} else if (action == "3") {
 
 			} else if (action == "USE") {
-
-				this.gameState.toggleTurn();
+				
+				if (this.playerEntity.getTarget() != null) {
+					this.playerEntity.getTarget().modifyLife(-this.playerEntity.getDamage());
+					this.gameState.toggleTurn();
+				}
 
 			} else if (action == "EXIT") {
 				boolean validExitInput = false;
