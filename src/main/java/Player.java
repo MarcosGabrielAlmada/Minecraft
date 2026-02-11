@@ -11,7 +11,7 @@ public class Player extends Entity {
 		super(position);
 		this.name = name;
 		this.energy = 10;
-		this.armor = 10;
+		this.armor = 0;
 		this.inventory = new Inventory();
 	}
 

@@ -18,6 +18,8 @@ public abstract class Entity {
 		this.life += cant;
 		if (this.life > 10) {
 			this.life = 10;
+		} else if (this.life > 10) {
+			this.life = 0;
 		}
 	}
 
