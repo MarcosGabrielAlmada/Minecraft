@@ -60,7 +60,8 @@ public class Controller {
 		 */
 		// Game creation
 		// this.gameState = new GameState(this.playerName, this.playerStartingPosition);
-		this.gameState = new GameState("Marcos", 1); // XXX - para testear
+		this.playerName = "Marcos"; // XXX - para testear
+		this.gameState = new GameState(playerName, 1); // XXX - para testear
 		this.playerEntity = this.gameState.getEntities()[0];
 		this.zombieEntity = this.gameState.getEntities()[1];
 
@@ -69,19 +70,17 @@ public class Controller {
 		try {
 			do {
 				cleanTerminal();
-				this.terminal.writer().flush();
-
 				writeWorld();
 				writePlayerStatus();
-
-				System.out.println(this.gameState.getTurn());
+				terminal.writer().flush();
 
 				if (this.gameState.getTurn() == this.playerEntity) {
 					this.endGame = playerTurn();
 				} else {
 					try {
-						Thread.sleep(3);
+						Thread.sleep(500);
 					} catch (Exception e) {
+						System.out.println("Ssssssssssssssssssss");
 					}
 					zombieTurn();
 					this.gameState.toggleTurn();
@@ -199,22 +198,22 @@ public class Controller {
 
 	private void writeWorld() {
 		int worldSize = World.WORLD_SIZE;
-		System.out.print("╔");
+		this.terminal.writer().print("╔");
 		writeLineWorld(worldSize - 1, "═══╦");
-		System.out.println("═══╗");
+		this.terminal.writer().println("═══╗");
 
-		System.out.print("║");
+		this.terminal.writer().print("║");
 		writeLineWorld(worldSize, "   ║", this.playerEntity, this.zombieEntity);
-		System.out.println();
+		this.terminal.writer().println();
 
-		System.out.print("╚");
+		this.terminal.writer().print("╚");
 		writeLineWorld(worldSize - 1, "═══╩");
-		System.out.println("═══╝");
+		this.terminal.writer().println("═══╝");
 	}
 
 	private void writeLineWorld(int worldSize, String c) {
 		for (int i = 0; i < worldSize; i++) {
-			System.out.print(c);
+			this.terminal.writer().print(c);
 		}
 	}
 
@@ -224,17 +223,22 @@ public class Controller {
 		String last = c.substring(2);
 		for (int i = 1; i <= worldSize; i++) {
 			if (p.getPosition() == i) {
-				System.out.print(first + "o" + last);
+				this.terminal.writer().print(first + "o" + last);
 			} else if (z.getPosition() == i) {
-				System.out.print(first + "x" + last);
+				this.terminal.writer().print(first + "x" + last);
 			} else {
-				System.out.print(c);
+				this.terminal.writer().print(c);
 			}
 		}
 	}
 
 	private void writePlayerStatus() {
-		// this.terminal.writer();
+		this.terminal.writer().println();
+		this.terminal.writer().println("\u001B[4;36m" + this.playerName + "\u001B[0m");
+		this.terminal.writer().print("\u001B[32m" + "Life: ");
+		this.terminal.writer().println(this.playerEntity.getLife() + "\u001B[0m");
+		this.terminal.writer().print("\u001B[33m" + "Target: ");
+		this.terminal.writer().println(this.playerEntity.getTarget() + "\u001B[0m");
 	}
 
 	// Entity turns
@@ -282,6 +286,7 @@ public class Controller {
 				boolean validExitInput = false;
 
 				do {
+					this.terminal.writer().println();
 					this.terminal.writer().println("Are you sure you want exit?[Y/n]: ");
 					this.terminal.writer().flush();
 					action = this.lineReader.readLine();
@@ -310,8 +315,6 @@ public class Controller {
 	private void zombieTurn() {
 		Zombie zombie = (Zombie) this.zombieEntity;
 		int tmpPosition = zombie.calculateMovement(this.playerEntity);
-		System.out.println(tmpPosition);
-		System.out.println(this.playerEntity.getPosition());
 		if (tmpPosition == this.playerEntity.getPosition()) {
 			zombie.attack(this.playerEntity);
 		} else {
