@@ -1,5 +1,5 @@
 public class Zombie extends Entity {
-    private static double power = 0.5;
+    private static double power = 1;
 
     // Constructor
 

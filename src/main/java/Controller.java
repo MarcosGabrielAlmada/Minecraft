@@ -71,7 +71,7 @@ public class Controller {
 			do {
 				cleanTerminal();
 				writeWorld();
-				writePlayerStatus();
+				writeEntityStatus();
 				terminal.writer().flush();
 
 				if (this.gameState.getTurn() == this.playerEntity) {
@@ -80,7 +80,6 @@ public class Controller {
 					try {
 						Thread.sleep(500);
 					} catch (Exception e) {
-						System.out.println("Ssssssssssssssssssss");
 					}
 					zombieTurn();
 					this.gameState.toggleTurn();
@@ -232,13 +231,21 @@ public class Controller {
 		}
 	}
 
-	private void writePlayerStatus() {
+	private void writeEntityStatus() {
 		this.terminal.writer().println();
-		this.terminal.writer().println("\u001B[4;36m" + this.playerName + "\u001B[0m");
-		this.terminal.writer().print("\u001B[32m" + "Life: ");
+		this.terminal.writer().println("\u001B[4;36m" + this.playerName + ":\u001B[0m");
+		this.terminal.writer().print("\u001B[32mLife: ");
 		this.terminal.writer().println(this.playerEntity.getLife() + "\u001B[0m");
-		this.terminal.writer().print("\u001B[33m" + "Target: ");
+		this.terminal.writer().print("\u001B[33mTarget: ");
 		this.terminal.writer().println(this.playerEntity.getTarget() + "\u001B[0m");
+
+		this.terminal.writer().println();
+		this.terminal.writer().println();
+		this.terminal.writer().println("\u001B[4;32mZombie:\u001B[0m");
+		this.terminal.writer().print("\u001B[32mLife: ");
+		this.terminal.writer().println(this.zombieEntity.getLife() + "\u001B[0m");
+		this.terminal.writer().print("\u001B[33mTarget: ");
+		this.terminal.writer().println(this.zombieEntity.getTarget() + "\u001B[0m");
 	}
 
 	// Entity turns
@@ -270,6 +277,13 @@ public class Controller {
 					}
 				} else {
 					player.move(tmpPosition);
+				}
+
+				if (tmpPosition + 1 == this.zombieEntity.getPosition() ||
+						tmpPosition - 1 == this.zombieEntity.getPosition()) {
+					this.playerEntity.setTarget(this.zombieEntity);
+				} else {
+					this.playerEntity.setTarget(null);
 				}
 
 			} else if (action == "1") {
@@ -318,10 +332,15 @@ public class Controller {
 		if (tmpPosition == this.playerEntity.getPosition()) {
 			zombie.attack(this.playerEntity);
 		} else {
-			this.zombieEntity.move(tmpPosition);
+			zombie.move(tmpPosition);
+		}
+
+		if (zombie.getPosition() + 1 == this.playerEntity.getPosition() ||
+				zombie.getPosition() - 1 == this.playerEntity.getPosition()) {
+			zombie.setTarget(this.playerEntity);
+		} else {
+			zombie.setTarget(null);
 		}
 	}
-
-
 
 }
