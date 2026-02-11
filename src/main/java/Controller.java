@@ -14,9 +14,9 @@ public class Controller {
 	private LineReader lineReader;
 
 	private String playerName;
-	private int playerPosition;
+	private int playerStartingPosition;
 
-	private GameState game;
+	private GameState gameState;
 	private boolean endGame;
 
 	private Entity playerEntity;
@@ -49,20 +49,20 @@ public class Controller {
 		cleanTerminal();
 		this.terminal.writer().println("Welcome to Minecraft");
 		this.terminal.writer().println();
-
-		// Set Player starting position
-		setPlayerName();
-
-		cleanTerminal();
-
-		// Set Player starting position
-		setPlayerPosition();
-
+		/*
+		 * // Set Player starting position
+		 * setPlayerName();
+		 * 
+		 * cleanTerminal();
+		 * 
+		 * // Set Player starting position
+		 * setPlayerPosition();
+		 */
 		// Game creation
-		this.game = new GameState(this.playerName, this.playerPosition);
-		// this.game = new GameState(playerName, playerPosition); XXX
-		this.playerEntity = this.game.getEntities()[0];
-		this.zombieEntity = this.game.getEntities()[1];
+		// this.gameState = new GameState(this.playerName, this.playerStartingPosition);
+		this.gameState = new GameState("Marcos", 1); // XXX - para testear
+		this.playerEntity = this.gameState.getEntities()[0];
+		this.zombieEntity = this.gameState.getEntities()[1];
 
 		this.endGame = false;
 
@@ -70,9 +70,24 @@ public class Controller {
 			do {
 				cleanTerminal();
 				this.terminal.writer().flush();
-				writeWorld();
 
-				this.endGame = playerTurn();
+				writeWorld();
+				writePlayerStatus();
+
+				System.out.println(this.gameState.getTurn());
+
+				if (this.gameState.getTurn() == this.playerEntity) {
+					this.endGame = playerTurn();
+				} else {
+					try {
+						Thread.sleep(3);
+					} catch (Exception e) {
+					}
+					zombieTurn();
+					this.gameState.toggleTurn();
+
+					// this.endGame = validatePlayerState();
+				}
 
 			} while (!this.endGame);
 
@@ -105,21 +120,24 @@ public class Controller {
 		this.terminal.writer().println();
 	}
 
-	/*private Reader setKeyReader() {
-		do {
-			try {
-				this.keyReader = this.terminal.reader();
-			} catch (Exception e) {
-			}
-		} while (this.keyReader == null);
-		return this.keyReader;
-	}*/
+	/*
+	 * private Reader setKeyReader() {
+	 * do {
+	 * try {
+	 * this.keyReader = this.terminal.reader();
+	 * } catch (Exception e) {
+	 * }
+	 * } while (this.keyReader == null);
+	 * return this.keyReader;
+	 * }
+	 */
 
 	private void setKeyMap() {
 		this.keyMap.bind("UP", "\033[A");
 		this.keyMap.bind("DOWN", "\033[B");
 		this.keyMap.bind("RIGHT", "\033[C");
 		this.keyMap.bind("LEFT", "\033[D");
+		this.keyMap.bind("SPACE", " ");
 		this.keyMap.bind("EXIT", "q");
 		this.keyMap.bind("USE", "f");
 		this.keyMap.bind("1", "1");
@@ -165,16 +183,16 @@ public class Controller {
 				this.terminal.writer().println("Where do you want to start?(they say that position 10 gives you luck)");
 				this.terminal.writer().print("Position(1-10): ");
 				this.terminal.writer().flush();
-				this.playerPosition = Integer.parseInt(this.lineReader.readLine());
-				if (this.playerPosition <= 0 || this.playerPosition >= 11) {
+				this.playerStartingPosition = Integer.parseInt(this.lineReader.readLine());
+				if (this.playerStartingPosition <= 0 || this.playerStartingPosition >= 11) {
 					throw new IllegalArgumentException("Position must be between 1 and 10 inclusive");
 				}
 			} catch (Exception e) {
-				this.playerPosition = -1;
+				this.playerStartingPosition = -1;
 				cleanTerminal();
 			}
-		} while (this.playerPosition == -1);
-		return this.playerPosition;
+		} while (this.playerStartingPosition == -1);
+		return this.playerStartingPosition;
 	}
 
 	// World's printer
@@ -215,6 +233,10 @@ public class Controller {
 		}
 	}
 
+	private void writePlayerStatus() {
+		// this.terminal.writer();
+	}
+
 	// Entity turns
 
 	private boolean playerTurn() {
@@ -230,7 +252,13 @@ public class Controller {
 				Player player = (Player) this.playerEntity;
 				int tmpPosition = player.calculateMovement(action);
 
-				if (tmpPosition == this.zombieEntity.getPosition()) { // in case the player collides with the zombie
+				// in case player doesn't actually move (invalid turn)
+				if (tmpPosition != this.playerEntity.getPosition()) { // TEST
+					this.gameState.toggleTurn();
+				}
+
+				// in case the player collides with the zombie
+				if (tmpPosition == this.zombieEntity.getPosition()) {
 					if (action == "LEFT") {
 						player.move(tmpPosition + 1);
 					} else {
@@ -240,8 +268,6 @@ public class Controller {
 					player.move(tmpPosition);
 				}
 
-				this.game.toggleTurn();
-
 			} else if (action == "1") {
 
 			} else if (action == "2") {
@@ -250,7 +276,7 @@ public class Controller {
 
 			} else if (action == "USE") {
 
-				this.game.toggleTurn();
+				this.gameState.toggleTurn();
 
 			} else if (action == "EXIT") {
 				boolean validExitInput = false;
@@ -280,4 +306,19 @@ public class Controller {
 
 		return this.endGame;
 	}
+
+	private void zombieTurn() {
+		Zombie zombie = (Zombie) this.zombieEntity;
+		int tmpPosition = zombie.calculateMovement(this.playerEntity);
+		System.out.println(tmpPosition);
+		System.out.println(this.playerEntity.getPosition());
+		if (tmpPosition == this.playerEntity.getPosition()) {
+			zombie.attack(this.playerEntity);
+		} else {
+			this.zombieEntity.move(tmpPosition);
+		}
+	}
+
+
+
 }

@@ -42,7 +42,7 @@ public class Player extends Entity {
 
 	public int calculateMovement(String direction) {
 		int position = -1;
-		int tmpPosition = -1;
+		int tmpPosition;
 
 		switch (direction) {
 			case "LEFT":

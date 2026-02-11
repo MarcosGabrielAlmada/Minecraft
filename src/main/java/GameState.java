@@ -7,12 +7,13 @@ public class GameState {
 	// Constructor
 
 	public GameState(String playerName, int playerPosition) {
-		this.world = new World();
 		this.entities = new Entity[2];
-		this.turn = this.entities[0];
-
 		initializeEntities(playerName, playerPosition);
+
+		this.world = new World();
 		initializeWorld();
+
+		this.turn = this.entities[0];
 	}
 
 
