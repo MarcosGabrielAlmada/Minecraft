@@ -18,6 +18,7 @@ public class Controller {
 
 	private GameState gameState;
 	private boolean endGame;
+	private String msgEndGame;
 
 	private Entity playerEntity;
 	private Entity zombieEntity;
@@ -75,23 +76,22 @@ public class Controller {
 				terminal.writer().flush();
 
 				if (this.gameState.getTurn() == this.playerEntity) {
-					this.endGame = playerTurn();
+					playerTurn();
 				} else {
 					try {
 						Thread.sleep(500);
 					} catch (Exception e) {
 					}
+
 					zombieTurn();
 					this.gameState.toggleTurn();
-
-					// this.endGame = validatePlayerState();
 				}
 
 			} while (!this.endGame);
 
 		} finally {
 			cleanTerminal();
-			terminal.writer().println("GoodBye!");
+			terminal.writer().println(this.msgEndGame);
 			terminal.writer().flush();
 			try {
 				terminal.close();
@@ -233,7 +233,7 @@ public class Controller {
 
 	private void writeEntityStatus() {
 		this.terminal.writer().println();
-		this.terminal.writer().println("\u001B[1;4;36m" + this.playerName + ":\u001B[0m");
+		this.terminal.writer().println("\u001B[1;4;36m" + this.playerName + "(you):\u001B[0m");
 		this.terminal.writer().print("\u001B[32mLife: ");
 		this.terminal.writer().println(this.playerEntity.getLife() + "\u001B[0m");
 		this.terminal.writer().print("\u001B[31mDamage: ");
@@ -254,11 +254,19 @@ public class Controller {
 
 	// Entity turns
 
-	private boolean playerTurn() {
+	private void finishGame() {
+		this.endGame = true;
+		this.msgEndGame = "\u001B[36mGoodbye!\u001B[0m";
+	}
+
+	private void finishGame(String msg) {
+		this.endGame = true;
+		this.msgEndGame = "\u001B[31m" + msg + "\u001B[0m";
+	}
+
+	private void playerTurn() {
 		String action;
 		boolean validMainInput;
-		this.endGame = false;
-
 		do {
 			validMainInput = true;
 			action = this.keyReader.readBinding(this.keyMap);
@@ -297,7 +305,7 @@ public class Controller {
 			} else if (action == "3") {
 
 			} else if (action == "USE") {
-				
+
 				if (this.playerEntity.getTarget() != null) {
 					this.playerEntity.getTarget().modifyLife(-this.playerEntity.getDamage());
 					this.gameState.toggleTurn();
@@ -313,7 +321,7 @@ public class Controller {
 					action = this.lineReader.readLine();
 
 					if (action.toUpperCase().equals("Y")) {
-						this.endGame = true;
+						finishGame();
 						validExitInput = true;
 					} else if (action.toUpperCase().equals("N")) {
 						validExitInput = true;
@@ -329,8 +337,6 @@ public class Controller {
 			}
 
 		} while (!validMainInput);
-
-		return this.endGame;
 	}
 
 	private void zombieTurn() {
@@ -338,6 +344,9 @@ public class Controller {
 		int tmpPosition = zombie.calculateMovement(this.playerEntity);
 		if (tmpPosition == this.playerEntity.getPosition()) {
 			zombie.attack(this.playerEntity);
+			if (this.playerEntity.getLife() <= 0) {
+				finishGame("You have died!");
+			}
 		} else {
 			zombie.move(tmpPosition);
 		}
