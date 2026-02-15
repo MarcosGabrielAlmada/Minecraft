@@ -2,7 +2,7 @@ public class Zombie extends Entity {
     // Constructor
 
     public Zombie(int position) {
-        super(position, 1);
+        super(position, 3);
     }
 
     // Commands

@@ -4,7 +4,6 @@ public abstract class Entity {
 	protected float damage;
 	private int armor;
 	protected Entity target;
-	
 
 	// Constructor
 
@@ -15,12 +14,20 @@ public abstract class Entity {
 		this.armor = 0;
 		this.target = null;
 	}
-	
 
 	// Commands
 
 	public void modifyLife(float cant) {
 		this.life += cant;
+
+		if (cant < 0) {
+			if (cant + armor <= 0) {
+				this.life += armor;
+			} else {
+				this.life -= cant;
+			}
+		}
+
 		if (this.life > 10) {
 			this.life = 10;
 		} else if (this.life < 0) {
@@ -39,7 +46,7 @@ public abstract class Entity {
 		}
 	}
 
-	public void addArmor(int cant) {
+	public void modifyArmor(int cant) {
 		this.armor += cant;
 		if (this.armor > 10) {
 			this.armor = 10;
@@ -49,7 +56,6 @@ public abstract class Entity {
 	public void setTarget(Entity e) {
 		this.target = e;
 	}
-
 
 	// Queries
 

@@ -77,6 +77,7 @@ public class Controller {
 
 				if (this.gameState.getTurn() == this.playerEntity) {
 					playerTurn();
+
 				} else {
 					try {
 						Thread.sleep(500);
@@ -256,8 +257,8 @@ public class Controller {
 		println(this.playerEntity.getLife() + "\u001B[0m");
 		print("\u001B[31mDamage: ");
 		println(this.playerEntity.getDamage() + "\u001B[0m");
-		print("\u001B[33mTarget: ");
-		println(this.playerEntity.getTarget() + "\u001B[0m");
+		print("\u001B[37mArmor: ");
+		println(this.playerEntity.getArmor() + "\u001B[0m");
 		print("\u001B[35mInventory: ");
 		for (int i = 0; i < player.getInventory().getLength(); i++) {
 			Item item = player.getInventory().getItemInPosition(i);
@@ -268,6 +269,8 @@ public class Controller {
 			}
 		}
 		println();
+		print("\u001B[33mTarget: ");
+		println(this.playerEntity.getTarget() + "\u001B[0m");
 
 		println();
 		println();
@@ -289,7 +292,7 @@ public class Controller {
 
 	private void finishGame(String msg) {
 		this.endGame = true;
-		this.msgEndGame = "\u001B[31m" + msg + "\u001B[0m";
+		this.msgEndGame = msg;
 	}
 
 	private void playerTurn() {
@@ -332,7 +335,9 @@ public class Controller {
 			} else if (action == "USE") {
 
 				player.useItem();
-
+				if (zombieEntity.getLife() == 0) {
+					finishGame("\\u001B[32mYou win!\\u001B[0m");
+				}
 				this.gameState.toggleTurn();
 
 			} else if (action == "EXIT") {
@@ -369,7 +374,7 @@ public class Controller {
 		if (tmpPosition == this.playerEntity.getPosition()) {
 			zombie.attack(this.playerEntity);
 			if (this.playerEntity.getLife() <= 0) {
-				finishGame("You have died!");
+				finishGame("You died!");
 			}
 		} else {
 			zombie.move(tmpPosition);

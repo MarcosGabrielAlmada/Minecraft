@@ -5,10 +5,9 @@ public class Armor extends Item {
         super("Armor", nivel);
     }
 
-
     // Commands
 
     public void use(Player player) {
-        player.addArmor(this.nivel*2);
+        player.modifyArmor(this.nivel);
     }
 }

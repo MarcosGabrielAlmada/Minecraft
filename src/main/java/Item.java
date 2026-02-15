@@ -3,7 +3,6 @@ public abstract class Item {
     protected int position;
     protected int nivel;
 
-
     // Constructor
 
     public Item(String name, int nivel) {
@@ -14,7 +13,6 @@ public abstract class Item {
     // Commands
 
     abstract public void use(Player player);
-
 
     // Queries
 
