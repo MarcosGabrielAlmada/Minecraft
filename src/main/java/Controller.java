@@ -48,8 +48,8 @@ public class Controller {
 
 		// Welcome
 		cleanTerminal();
-		this.terminal.writer().println("Welcome to Minecraft");
-		this.terminal.writer().println();
+		println("Welcome to Minecraft");
+		println();
 		/*
 		 * // Set Player starting position
 		 * setPlayerName();
@@ -115,7 +115,7 @@ public class Controller {
 
 	private void cleanTerminal() {
 		this.terminal.puts(Capability.clear_screen);
-		this.terminal.writer().println();
+		println();
 	}
 
 	/*
@@ -164,8 +164,8 @@ public class Controller {
 	private String setPlayerName() {
 		do {
 			try {
-				this.terminal.writer().println("What is your name?");
-				this.terminal.writer().print("Name: ");
+				println("What is your name?");
+				print("Name: ");
 				this.terminal.writer().flush();
 				this.playerName = this.lineReader.readLine();
 			} catch (Exception e) {
@@ -178,8 +178,8 @@ public class Controller {
 	private int setPlayerPosition() {
 		do {
 			try {
-				this.terminal.writer().println("Where do you want to start?(they say that position 10 gives you luck)");
-				this.terminal.writer().print("Position(1-10): ");
+				println("Where do you want to start?(they say that position 10 gives you luck)");
+				print("Position(1-10): ");
 				this.terminal.writer().flush();
 				this.playerStartingPosition = Integer.parseInt(this.lineReader.readLine());
 				if (this.playerStartingPosition <= 0 || this.playerStartingPosition >= 11) {
@@ -193,26 +193,38 @@ public class Controller {
 		return this.playerStartingPosition;
 	}
 
-	// World's printer
+	// Printers
+
+	private void print(String msg) {
+		terminal.writer().print(msg);
+	}
+
+	private void println() {
+		terminal.writer().println();
+	}
+
+	private void println(String msg) {
+		terminal.writer().println(msg);
+	}
 
 	private void writeWorld() {
 		int worldSize = World.WORLD_SIZE;
-		this.terminal.writer().print("╔");
+		print("╔");
 		writeLineWorld(worldSize - 1, "═══╦");
-		this.terminal.writer().println("═══╗");
+		println("═══╗");
 
-		this.terminal.writer().print("║");
+		print("║");
 		writeLineWorld(worldSize, "   ║", this.playerEntity, this.zombieEntity);
-		this.terminal.writer().println();
+		println();
 
-		this.terminal.writer().print("╚");
+		print("╚");
 		writeLineWorld(worldSize - 1, "═══╩");
-		this.terminal.writer().println("═══╝");
+		println("═══╝");
 	}
 
 	private void writeLineWorld(int worldSize, String c) {
 		for (int i = 0; i < worldSize; i++) {
-			this.terminal.writer().print(c);
+			print(c);
 		}
 	}
 
@@ -222,46 +234,46 @@ public class Controller {
 		String last = c.substring(2);
 		for (int i = 1; i <= worldSize; i++) {
 			if (p.getPosition() == i) {
-				this.terminal.writer().print(first + "o" + last);
+				print(first + "o" + last);
 			} else if (z.getPosition() == i) {
-				this.terminal.writer().print(first + "x" + last);
+				print(first + "x" + last);
 			} else {
-				this.terminal.writer().print(c);
+				print(c);
 			}
 		}
 	}
 
 	private void writeEntityStatus() {
 		Player player = (Player) this.playerEntity;
-		this.terminal.writer().println();
-		this.terminal.writer().println("\u001B[1;4;36m" + this.playerName + "(you):\u001B[0m");
-		this.terminal.writer().print("\u001B[32mLife: ");
-		this.terminal.writer().println(this.playerEntity.getLife() + "\u001B[0m");
-		this.terminal.writer().print("\u001B[31mDamage: ");
-		this.terminal.writer().println(this.playerEntity.getDamage() + "\u001B[0m");
-		this.terminal.writer().print("\u001B[33mTarget: ");
-		this.terminal.writer().println(this.playerEntity.getTarget() + "\u001B[0m");
-		this.terminal.writer().print("\u001B[35mInventory: ");
+		println();
+		println("\u001B[1;4;36m" + this.playerName + "(you):\u001B[0m");
+		print("\u001B[32mLife: ");
+		println(this.playerEntity.getLife() + "\u001B[0m");
+		print("\u001B[31mDamage: ");
+		println(this.playerEntity.getDamage() + "\u001B[0m");
+		print("\u001B[33mTarget: ");
+		println(this.playerEntity.getTarget() + "\u001B[0m");
+		print("\u001B[35mInventory: ");
 		for (int i = 0; i < player.getInventory().getLength(); i++) {
 			Item item = player.getInventory().getItemInPosition(i);
 			if (player.getInventory().getSelected() == item) {
-				this.terminal.writer().print("\u001B[1m[" + item.getName() + " " + item.getNivel() + "]\u001B[0;35m");
+				print("\u001B[1m[" + item.getName() + " " + item.getNivel() + "]\u001B[0;35m");
 			} else {
-				this.terminal.writer().print("[" + item.getName() + " " + item.getNivel() + "]");
+				print("[" + item.getName() + " " + item.getNivel() + "]");
 			}
 		}
-		this.terminal.writer().println();
+		println();
 
 
-		this.terminal.writer().println();
-		this.terminal.writer().println();
-		this.terminal.writer().println("\u001B[1;4;31mZombie:\u001B[0m");
-		this.terminal.writer().print("\u001B[32mLife: ");
-		this.terminal.writer().println(this.zombieEntity.getLife() + "\u001B[0m");
-		this.terminal.writer().print("\u001B[31mDamage: ");
-		this.terminal.writer().println(this.zombieEntity.getDamage() + "\u001B[0m");
-		this.terminal.writer().print("\u001B[33mTarget: ");
-		this.terminal.writer().println(this.zombieEntity.getTarget() + "\u001B[0m");
+		println();
+		println();
+		println("\u001B[1;4;31mZombie:\u001B[0m");
+		print("\u001B[32mLife: ");
+		println(this.zombieEntity.getLife() + "\u001B[0m");
+		print("\u001B[31mDamage: ");
+		println(this.zombieEntity.getDamage() + "\u001B[0m");
+		print("\u001B[33mTarget: ");
+		println(this.zombieEntity.getTarget() + "\u001B[0m");
 	}
 
 	// Entity turns
@@ -323,8 +335,8 @@ public class Controller {
 				boolean validExitInput = false;
 
 				do {
-					this.terminal.writer().println();
-					this.terminal.writer().println("Are you sure you want exit?[Y/n]: ");
+					println();
+					println("Are you sure you want exit?[Y/n]: ");
 					this.terminal.writer().flush();
 					action = this.lineReader.readLine();
 
@@ -367,4 +379,7 @@ public class Controller {
 		}
 	}
 
+
+
+	
 }
