@@ -9,6 +9,6 @@ public class Food extends Item {
     // Commands
 
     public void use(Player player) {
-        player.addEnergy(this.nivel*2);
+        player.modifyLife(this.nivel);
     }
 }

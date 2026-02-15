@@ -2,6 +2,7 @@ public abstract class Entity {
 	protected float life;
 	protected int position;
 	protected float damage;
+	private int armor;
 	protected Entity target;
 	
 
@@ -11,6 +12,7 @@ public abstract class Entity {
 		this.life = 10;
 		this.position = position;
 		this.damage = damage;
+		this.armor = 0;
 		this.target = null;
 	}
 	
@@ -37,6 +39,13 @@ public abstract class Entity {
 		}
 	}
 
+	public void addArmor(int cant) {
+		this.armor += cant;
+		if (this.armor > 10) {
+			this.armor = 10;
+		}
+	}
+
 	public void setTarget(Entity e) {
 		this.target = e;
 	}
@@ -54,6 +63,10 @@ public abstract class Entity {
 
 	public float getDamage() {
 		return this.damage;
+	}
+
+	public int getArmor() {
+		return this.armor;
 	}
 
 	public Entity getTarget() {
