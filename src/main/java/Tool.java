@@ -5,10 +5,11 @@ public class Tool extends Item {
         super("Tool", nivel);
     }
 
-
     // Commands
 
     public void use(Player player) {
-        player.getTarget().modifyLife(nivel*2);
+        if (player.getTarget() != null) {
+            player.getTarget().modifyLife(-player.getDamage() * 2);
+        }
     }
 }

@@ -73,7 +73,7 @@ public class Controller {
 				cleanTerminal();
 				writeWorld();
 				writeEntityStatus();
-				terminal.writer().flush();
+				flush();
 
 				if (this.gameState.getTurn() == this.playerEntity) {
 					playerTurn();
@@ -91,11 +91,12 @@ public class Controller {
 
 		} finally {
 			cleanTerminal();
-			terminal.writer().println(this.msgEndGame);
-			terminal.writer().flush();
+			println(this.msgEndGame);
+			flush();
 			try {
 				terminal.close();
 			} catch (Exception e) {
+				print(e.getMessage());
 			}
 		}
 
@@ -166,7 +167,7 @@ public class Controller {
 			try {
 				println("What is your name?");
 				print("Name: ");
-				this.terminal.writer().flush();
+				flush();
 				this.playerName = this.lineReader.readLine();
 			} catch (Exception e) {
 				cleanTerminal();
@@ -180,7 +181,7 @@ public class Controller {
 			try {
 				println("Where do you want to start?(they say that position 10 gives you luck)");
 				print("Position(1-10): ");
-				this.terminal.writer().flush();
+				flush();
 				this.playerStartingPosition = Integer.parseInt(this.lineReader.readLine());
 				if (this.playerStartingPosition <= 0 || this.playerStartingPosition >= 11) {
 					throw new IllegalArgumentException("Position must be between 1 and 10 inclusive");
@@ -205,6 +206,10 @@ public class Controller {
 
 	private void println(String msg) {
 		terminal.writer().println(msg);
+	}
+
+	private void flush() {
+		this.terminal.writer().flush();
 	}
 
 	private void writeWorld() {
@@ -264,7 +269,6 @@ public class Controller {
 		}
 		println();
 
-
 		println();
 		println();
 		println("\u001B[1;4;31mZombie:\u001B[0m");
@@ -300,7 +304,7 @@ public class Controller {
 				int tmpPosition = player.calculateMovement(action);
 
 				// in case player doesn't actually move (invalid turn)
-				if (tmpPosition != player.getPosition()) { // TEST
+				if (tmpPosition != player.getPosition()) {
 					this.gameState.toggleTurn();
 				}
 
@@ -324,12 +328,12 @@ public class Controller {
 
 			} else if (action == "1" || action == "2" || action == "3") {
 				player.getInventory().setSelected(Integer.parseInt(action) - 1);
+
 			} else if (action == "USE") {
 
-				if (this.playerEntity.getTarget() != null) {
-					this.playerEntity.getTarget().modifyLife(-this.playerEntity.getDamage());
-					this.gameState.toggleTurn();
-				}
+				player.useItem();
+
+				this.gameState.toggleTurn();
 
 			} else if (action == "EXIT") {
 				boolean validExitInput = false;
@@ -337,7 +341,7 @@ public class Controller {
 				do {
 					println();
 					println("Are you sure you want exit?[Y/n]: ");
-					this.terminal.writer().flush();
+					flush();
 					action = this.lineReader.readLine();
 
 					if (action.toUpperCase().equals("Y")) {
@@ -379,7 +383,4 @@ public class Controller {
 		}
 	}
 
-
-
-	
 }
