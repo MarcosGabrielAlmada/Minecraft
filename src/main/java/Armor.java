@@ -2,7 +2,7 @@ public class Armor extends Item {
     // Constructor
 
     public Armor(int nivel) {
-        super(nivel);
+        super("Armor", nivel);
     }
 
 

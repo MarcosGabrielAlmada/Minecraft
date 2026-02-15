@@ -232,6 +232,7 @@ public class Controller {
 	}
 
 	private void writeEntityStatus() {
+		Player player = (Player) this.playerEntity;
 		this.terminal.writer().println();
 		this.terminal.writer().println("\u001B[1;4;36m" + this.playerName + "(you):\u001B[0m");
 		this.terminal.writer().print("\u001B[32mLife: ");
@@ -240,6 +241,17 @@ public class Controller {
 		this.terminal.writer().println(this.playerEntity.getDamage() + "\u001B[0m");
 		this.terminal.writer().print("\u001B[33mTarget: ");
 		this.terminal.writer().println(this.playerEntity.getTarget() + "\u001B[0m");
+		this.terminal.writer().print("\u001B[35mInventory: ");
+		for (int i = 0; i < player.getInventory().getLength(); i++) {
+			Item item = player.getInventory().getItemInPosition(i);
+			if (player.getInventory().getSelected() == item) {
+				this.terminal.writer().print("\u001B[1m[" + item.getName() + " " + item.getNivel() + "]\u001B[0;35m");
+			} else {
+				this.terminal.writer().print("[" + item.getName() + " " + item.getNivel() + "]");
+			}
+		}
+		this.terminal.writer().println();
+
 
 		this.terminal.writer().println();
 		this.terminal.writer().println();
@@ -267,12 +279,12 @@ public class Controller {
 	private void playerTurn() {
 		String action;
 		boolean validMainInput;
+		Player player = (Player) this.playerEntity;
 		do {
 			validMainInput = true;
 			action = this.keyReader.readBinding(this.keyMap);
 
 			if (action == "LEFT" || action == "RIGHT") {
-				Player player = (Player) this.playerEntity;
 				int tmpPosition = player.calculateMovement(action);
 
 				// in case player doesn't actually move (invalid turn)
@@ -298,12 +310,8 @@ public class Controller {
 					player.setTarget(null);
 				}
 
-			} else if (action == "1") {
-
-			} else if (action == "2") {
-
-			} else if (action == "3") {
-
+			} else if (action == "1" || action == "2" || action == "3") {
+				player.getInventory().setSelected(Integer.parseInt(action) - 1);
 			} else if (action == "USE") {
 
 				if (this.playerEntity.getTarget() != null) {

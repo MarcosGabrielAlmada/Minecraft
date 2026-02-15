@@ -7,19 +7,22 @@ public class Inventory {
 
     public Inventory() {
         this.content = new Item[size];
+        this.content[0] = new Food(1);
+        this.content[1] = new Armor(1);
+        this.content[2] = new Tool(1);
         this.selected = this.content[0];
     }
 
     // Commands
 
     public void setSelected(int pos) {
-        this.selected = this.content[pos - 1];
+        this.selected = this.content[pos];
     }
 
     public boolean addItemInPosition(Item item, int pos) {
         boolean res = false;
-        if (this.content[pos - 1] == null)
-            this.content[pos - 1] = item;
+        if (this.content[pos] == null)
+            this.content[pos] = item;
         res = true;
         return res;
     }
@@ -37,7 +40,7 @@ public class Inventory {
     }
 
     public Item getItemInPosition(int pos) {
-        return this.content[pos - 1];
+        return this.content[pos];
     }
 
     public Item getSelected() {

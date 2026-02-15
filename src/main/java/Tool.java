@@ -2,7 +2,7 @@ public class Tool extends Item {
     // Constructor
 
     public Tool(int nivel) {
-        super(nivel);
+        super("Tool", nivel);
     }
 
 

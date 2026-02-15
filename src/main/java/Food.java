@@ -2,7 +2,7 @@ public class Food extends Item {
     // Constructor
 
     public Food(int nivel) {
-        super(nivel);
+        super("Food", nivel);
     }
 
 

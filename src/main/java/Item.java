@@ -6,7 +6,8 @@ public abstract class Item {
 
     // Constructor
 
-    public Item(int nivel) {
+    public Item(String name, int nivel) {
+        this.name = name;
         this.nivel = nivel;
     }
 
