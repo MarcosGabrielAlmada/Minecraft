@@ -3,7 +3,6 @@ public class GameState {
 	private Entity[] entities;
 	private Entity turn;
 
-
 	// Constructor
 
 	public GameState(String playerName, int playerPosition) {
@@ -15,7 +14,6 @@ public class GameState {
 
 		this.turn = this.entities[0];
 	}
-
 
 	// Helpers
 
@@ -30,10 +28,10 @@ public class GameState {
 	}
 
 	private void initializeWorld() {
-		for (int i = 0; i > entities.length; i++)
-		this.world.serEntityInPosition(this.entities[i], this.entities[i].getPosition());
+		for (int i = 0; i < entities.length; i++) {
+			this.world.serEntityInPosition(this.entities[i], this.entities[i].getPosition());
+		}
 	}
-
 
 	// Commands
 
@@ -44,7 +42,6 @@ public class GameState {
 			this.turn = this.entities[0];
 		}
 	}
-
 
 	// Queries
 
