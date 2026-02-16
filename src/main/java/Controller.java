@@ -23,14 +23,6 @@ public class Controller {
 	private Entity playerEntity;
 	private Entity zombieEntity;
 
-	// private ;
-	// private ;
-	// private ;
-	// private ;
-	// private ;
-	// private ;
-	// private ;
-
 	public void run() {
 
 		// Create a default(+jansi) terminal
@@ -88,6 +80,8 @@ public class Controller {
 					this.gameState.toggleTurn();
 				}
 
+				updateTargets();
+
 			} while (!this.endGame);
 
 		} finally {
@@ -97,7 +91,7 @@ public class Controller {
 			try {
 				terminal.close();
 			} catch (Exception e) {
-				print(e.getMessage());
+				println(e.getMessage());
 			}
 		}
 
@@ -322,13 +316,6 @@ public class Controller {
 					player.move(tmpPosition);
 				}
 
-				if (tmpPosition + 1 == this.zombieEntity.getPosition() ||
-						tmpPosition - 1 == this.zombieEntity.getPosition()) {
-					player.setTarget(this.zombieEntity);
-				} else {
-					player.setTarget(null);
-				}
-
 			} else if (action == "1" || action == "2" || action == "3") {
 				player.getInventory().setSelected(Integer.parseInt(action) - 1);
 
@@ -336,7 +323,7 @@ public class Controller {
 
 				player.useItem();
 				if (zombieEntity.getLife() == 0) {
-					finishGame("\\u001B[32mYou win!\\u001B[0m");
+					finishGame("\u001B[32mYou win!\u001B[0m");
 				}
 				this.gameState.toggleTurn();
 
@@ -379,13 +366,26 @@ public class Controller {
 		} else {
 			zombie.move(tmpPosition);
 		}
+	}
 
-		if (zombie.getPosition() + 1 == this.playerEntity.getPosition() ||
-				zombie.getPosition() - 1 == this.playerEntity.getPosition()) {
-			zombie.setTarget(this.playerEntity);
+	private void updateTargets() {
+		int playerPosition = this.playerEntity.getPosition();
+		int zombiePosition = this.zombieEntity.getPosition();
+		
+		if (playerPosition + 1 == this.zombieEntity.getPosition() ||
+				playerPosition - 1 == this.zombieEntity.getPosition()) {
+			this.playerEntity.setTarget(this.zombieEntity);
 		} else {
-			zombie.setTarget(null);
+			this.playerEntity.setTarget(null);
+		}
+		
+		if (zombiePosition + 1 == this.playerEntity.getPosition() ||
+				zombiePosition - 1 == this.playerEntity.getPosition()) {
+			this.zombieEntity.setTarget(this.playerEntity);
+		} else {
+			this.zombieEntity.setTarget(null);
 		}
 	}
+
 
 }
