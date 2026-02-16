@@ -35,7 +35,7 @@ public abstract class Entity {
 		}
 	}
 
-	public void move(int p) {
+	public void moveToPosition(int p) {
 		this.position = p;
 	}
 

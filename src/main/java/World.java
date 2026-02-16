@@ -20,7 +20,7 @@ public class World {
 		if (e.getPosition() != pos - 1) {
 			this.grid[e.getPosition()] = null;
 			this.grid[pos - 1] = e;
-			e.move(pos);
+			e.moveToPosition(pos);
 		}
 	}
 

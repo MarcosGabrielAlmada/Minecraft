@@ -308,12 +308,12 @@ public class Controller {
 				// in case the player collides with the zombie
 				if (tmpPosition == this.zombieEntity.getPosition()) {
 					if (action == "LEFT") {
-						player.move(tmpPosition + 1);
+						player.moveToPosition(tmpPosition + 1);
 					} else {
-						player.move(tmpPosition - 1);
+						player.moveToPosition(tmpPosition - 1);
 					}
 				} else {
-					player.move(tmpPosition);
+					player.moveToPosition(tmpPosition);
 				}
 
 			} else if (action == "1" || action == "2" || action == "3") {
@@ -364,7 +364,7 @@ public class Controller {
 				finishGame("You died!");
 			}
 		} else {
-			zombie.move(tmpPosition);
+			zombie.moveToPosition(tmpPosition);
 		}
 	}
 
